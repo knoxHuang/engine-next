@@ -21,7 +21,6 @@ import renderMode from './lib/utils/render-mode';
 // deps
 import * as math from 'vmath';
 import renderer from 'renderer.js';
-import gfx from 'gfx.js';
 import { RecyclePool, Pool } from 'memop';
 import canvas from './lib/canvas';
 
@@ -72,7 +71,7 @@ let renderEngine = {
   // modules
   math,
   renderer,
-  gfx,
+  gfx: window.gfx,
   canvas
 };
 
