@@ -71,7 +71,7 @@ let renderEngine = {
   // modules
   math,
   renderer,
-  gfx: window.gfx,
+  gfx,
   canvas
 };
 
