@@ -1,22 +1,19 @@
 // intenral
-import ForwardRendererWebGL from './lib/forward-renderer-webgl';
-import ForwardRendererCanvas from './lib/forward-renderer-canvas';
+import ForwardRenderer from './lib/forward-renderer';
 import shaders from './lib/shaders/index';
 
-import Camera from './lib/scene/camera';
 import RenderData from './lib/scene/render-data';
+import IARenderData from './lib/scene/ia-render-data';
 
 import Particles from './lib/vfx/particles';
 
 import Asset from './lib/assets/asset';
+import TextureAsset from './lib/assets/texture';
 import Material from './lib/assets/material';
-import MaterialUtil from './lib/utils/material-util';
 import SpriteMaterial from './lib/materials/sprite-material';
 import GraySpriteMaterial from './lib/materials/gray-sprite-material';
 import StencilMaterial from './lib/materials/stencil-material';
 import ParticleMaterial from './lib/materials/particle-material';
-
-import renderMode from './lib/utils/render-mode';
 
 // deps
 import * as math from 'vmath';
@@ -25,9 +22,10 @@ import { RecyclePool, Pool } from 'memop';
 import canvas from './lib/canvas';
 
 const Scene = renderer.Scene;
-const ForwardRenderer = renderMode.supportWebGL ? ForwardRendererWebGL : ForwardRendererCanvas;
-const Texture2D = renderMode.supportWebGL ? gfx.Texture2D : canvas.Texture2D;
-const Device = renderMode.supportWebGL ? gfx.Device : canvas.Device;
+const Camera = renderer.Camera;
+const View = renderer.View;
+const Texture2D = gfx.Texture2D;
+const Device = gfx.Device;
 const Model = renderer.Model;
 const InputAssembler = renderer.InputAssembler;
 
@@ -37,11 +35,16 @@ let renderEngine = {
   ForwardRenderer,
   Texture2D,
 
+  // Canvas render support
+  canvas,
+
   // render scene
   Scene,
   Camera,
+  View,
   Model,
   RenderData,
+  IARenderData,
   InputAssembler,
 
   // vfx
@@ -49,6 +52,7 @@ let renderEngine = {
   
   // assets
   Asset,
+  TextureAsset,
   Material,
   
   // materials
@@ -60,10 +64,6 @@ let renderEngine = {
   // shaders
   shaders,
 
-  // utils
-  renderMode,
-  MaterialUtil,
-
   // memop
   RecyclePool,
   Pool,
@@ -72,7 +72,6 @@ let renderEngine = {
   math,
   renderer,
   gfx,
-  canvas
 };
 
 export default renderEngine;

@@ -7,7 +7,8 @@
   const walker = window.walker;
 
   const { gfx, RenderData } = engine;
-  const { Scene, Camera, SpriteMaterial, Texture2D } = engine;
+  const { Scene, SpriteMaterial, Texture2D } = engine;
+  const { Camera } = engine.renderer;
   const { vec3, quat, randomRange } = engine.math;
   const builtins = window.builtins;
   const Node = window.sgraph.Node;
@@ -169,24 +170,49 @@
         flipY: false,
         images : [image]
       });
+      texture.getImpl = function () {
+        return this;
+      }
+      texture.getId = function () {
+        return image.src;
+      }
       material.texture = texture;
+      material.updateHash();
 
       for (let i = 0; i < 20; ++i) {
         spawnNode();
       }
+
+      // Test update hash
+      var start = performance.now();
+      for (var count = 0; count < 10000; count++) {
+          material.updateHash();
+      }
+      var dur = performance.now() - start;
+      console.log(dur);
+      number.innerText = dur.toFixed(0) + ' - ' + material._hash;
     }
   });
 
   walker.init(device, builtins);
 
   // add camera
-  let camera = new Camera({
-    x: 0, y: 0, w: canvas.width, h: canvas.height
-  });
+  let camera = new Camera();
   camera.setStages([
     'transparent'
   ]);
+  camera.setFov(Math.PI * 60 / 180);
+  camera.setNear(0.1);
+  camera.setFar(1024);
   scene.addCamera(camera);
+
+  // create camera node
+  let node = new Node('camera');
+  let zeye = canvas.height / 1.1566;
+  node.lpos = vec3.new(canvas.width / 2, canvas.height / 2, zeye);
+  node.lookAt(vec3.new(canvas.width / 2, canvas.height / 2, 0.0),
+              vec3.new(0.0, 1.0, 0.0));
+  camera.setNode(node);
 
   let time = 0;
 
