@@ -17,7 +17,6 @@ import ParticleMaterial from './lib/materials/particle-material';
 
 // deps
 import * as math from 'vmath';
-import renderer from 'renderer.js';
 import { RecyclePool, Pool } from 'memop';
 import canvas from './lib/canvas';
 
